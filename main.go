@@ -42,7 +42,7 @@ func main() {
 		Age:    0,
 		Gender: "",
 	},
-		IsSuperUser: true} //  // помещаем в переменную структуру типа Admin с наполненными данными, не проходящими валидацию
+		IsSuperUser: true}        //  // помещаем в переменную структуру типа Admin с наполненными данными, не проходящими валидацию
 	bs, _ := json.Marshal(tester) // приводим к формату JSON согласно меткам структуру tester
 	fmt.Println(string(bs))       // выводим приведенный к строке JSON
 	bsb, _ := json.Marshal(adm)   // приводим к формату JSON согласно меткам структуру adm
@@ -66,4 +66,20 @@ func main() {
 	fmt.Println(primitives.ShiftASCII("bro12", 1))
 	fmt.Println(primitives.LatinLetters("sefwefsfef 2134535sdffsfefsef sefefEEFFSF"))
 	fmt.Println(primitives.GenerateSelfStory("Вася", 39, 234.3))
+
+	var nilForArr [2]int
+	//if nilForArr == nil {
+	//	fmt.Println("nil!")
+	//}
+	fmt.Println(nilForArr) // заполнится нулевым значением - нули в массиве, у массивов нет nil
+	var nilForSlice []int  // заполнится нулевым значением - nil, если явно не использовать функцию типа make
+	if nilForSlice == nil {
+		fmt.Println("nil!")
+	}
+	fmt.Println(nilForSlice)
+	var nilForMap map[int]string // заполнится нулевым значением - nil, если явно не использовать функцию типа make
+	if nilForMap == nil {
+		fmt.Println("nil!")
+	}
+	fmt.Println(nilForMap)
 }
