@@ -42,7 +42,7 @@ func main() {
 		Age:    0,
 		Gender: "",
 	},
-		IsSuperUser: true}        //  // помещаем в переменную структуру типа Admin с наполненными данными, не проходящими валидацию
+		IsSuperUser: true} //  // помещаем в переменную структуру типа Admin с наполненными данными, не проходящими валидацию
 	bs, _ := json.Marshal(tester) // приводим к формату JSON согласно меткам структуру tester
 	fmt.Println(string(bs))       // выводим приведенный к строке JSON
 	bsb, _ := json.Marshal(adm)   // приводим к формату JSON согласно меткам структуру adm
@@ -77,9 +77,33 @@ func main() {
 		fmt.Println("nil!")
 	}
 	fmt.Println(nilForSlice)
-	var nilForMap map[int]string // заполнится нулевым значением - nil, если явно не использовать функцию типа make
+	var nilForMap map[int]string // заполнится нулевым значением - nil, если явно не использовать функцию типа make, по факту просто объявили но не инициализировали
 	if nilForMap == nil {
 		fmt.Println("nil!")
 	}
 	fmt.Println(nilForMap)
+	var makeForSlice []int = make([]int, 0) // тут же мы присвоили пустой слайс
+	if makeForSlice == nil {
+		fmt.Println("nil!")
+	}
+	fmt.Println(makeForSlice)
+	var makeForMap map[int]string = make(map[int]string) // тут же мы присвоили пустую мапу
+	if makeForMap == nil {
+		fmt.Println("nil!")
+	}
+	fmt.Println(makeForMap)
+
+	_, ifKeyExists := makeForMap[123]      // мапа возвращает значение а так же флаг существования ключа
+	fmt.Println(ifKeyExists)               // видим что такого ключа нет
+	makeForMap[123] = "Bruh"               //добавили ключ
+	_, ifKeyExistsAgain := makeForMap[123] // теперь проверяем повторно существование данного ключа
+	fmt.Println(ifKeyExistsAgain)
+
+	var x = 10
+	var pp = &x  // reference - получение адреса объекта x
+	var yy = *pp // эта же переменная не является ссылкой, она запишет то, что получит через указатель, но сама она не является указателем. Один раз получили через указатель значение x, и сохранили
+	fmt.Println(yy)
+	*pp = 14
+	fmt.Println(x, pp, yy) // 14 0x14000110e08 10 пример того, что поскольку pp указатель, то в нем лежит адрес переменной x
+
 }
