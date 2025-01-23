@@ -11,3 +11,7 @@ const (
 	GG = 10 // аналогично следующая переменная наследует значение
 	GGG
 )
+
+var BasStr = "Check this text mate😀🤯"
+var R = []rune(BasStr)
+var BB = []byte(BasStr)

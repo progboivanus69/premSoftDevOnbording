@@ -15,9 +15,13 @@ func main() {
 	var brother = 10          // создали переменную
 	brother, sister := 14, 34 // а здесь с помощью синтаксического сахара краткой формы объявления переменной мы старой переменной смогли переприсвоить значение а не создать ее, потому что слева еще была указана новая переменная
 	//brother:= 14 // а тут будет ошибка что нет новой переменной слева
-	fmt.Println(brother, sister)     //
-	fmt.Println(slices.Mapa["иван"]) // вывод значения мапы по ключу из пакета maps
-	fmt.Println(slices.Mapa)         // полный вывод мапы по переменной
+	fmt.Printf("The type of the following var is: %T,the value is: %v\n", vars.BasStr, vars.BasStr) // используем спецификаторы для вывода типа и значения переменной
+	fmt.Printf("The type of the following var is: %T,the value is: %v\n", vars.R, vars.R)           // выводим преобразованную строку в срез рун
+	fmt.Printf("The type of the following var is: %T,the value is: %v\n", vars.BB, vars.BB)         // выводим преобразованную строку в срез байт
+	slices.SliceIterator(vars.BB)                                                                   // используем функцию для перебора байтов в строке
+	fmt.Println(brother, sister)                                                                    //
+	fmt.Println(slices.Mapa["иван"])                                                                // вывод значения мапы по ключу из пакета maps
+	fmt.Println(slices.Mapa)                                                                        // полный вывод мапы по переменной
 	// fmt.Println(maps.Mapa["ива"])       //./main.go:28:14: undefined: mapa - необъъявленная мапа
 	next := make(map[int]string, 10) // создание пустой мапы через встроенную функцию make с заданной длиной ключей
 	fmt.Println(len(next))           // выводим длину мапы - равна нулю, потому что мапа пустая
