@@ -9,6 +9,8 @@ import (
 	"encoding/json"
 	"fmt"
 	"github.com/go-playground/validator/v10"
+	"os"
+	"time"
 )
 
 func main() {
@@ -100,10 +102,39 @@ func main() {
 	fmt.Println(ifKeyExistsAgain)
 
 	var x = 10
-	var pp = &x  // reference - получение адреса объекта x
+	var pp = &x // reference - получение адреса объекта x
+	// это эквивалент записи var pp *int = &x, или pp := &x
 	var yy = *pp // эта же переменная не является ссылкой, она запишет то, что получит через указатель, но сама она не является указателем. Один раз получили через указатель значение x, и сохранили
 	fmt.Println(yy)
 	*pp = 14
 	fmt.Println(x, pp, yy) // 14 0x14000110e08 10 пример того, что поскольку pp указатель, то в нем лежит адрес переменной x
+	// в гошке все косплексные типы, и переменные, которые не могут получить дфеолтное значение без инициализации - получают nil, и указатель - не исключение
 
+	var f *int
+	fmt.Println(f)             // увидим nil, потому что переменной типа указатель не инициализирован адрес (пытаемся поулучить содержимое указателя а не содержимое той переменной, на которую могли бы сослаться, поэтому разыменование * не используется)
+	fmt.Println(f == nil)      // будет правдой
+	fmt.Println(&f == nil, &f) // будет ложью, потому что у переменной f есть свой адрес хранения
+
+	if _, err := os.Open("foo.ext"); err != nil {
+		fmt.Println(err) // вывели ошибку, указывающую на проблему
+	} else {
+		fmt.Println("All is fine.")
+	}
+	hour := time.Now().Hour()
+	fmt.Println(hour)
+	switch {
+	case hour >= 5 && hour < 9:
+		fmt.Println("I'm writing")
+	case hour >= 9 && hour < 18:
+		fmt.Println("I'm working")
+	default:
+		fmt.Println("I'm sleeping")
+	}
+
+	switch { // если не класть параметр, то этот свитч работает как if, сравнение case идет со значением true, то есть если результат сравнения в case true, то это отработает
+	case true:
+		fmt.Println("I'm test")
+	case false:
+		fmt.Println("I'm writingППППП")
+	}
 }
