@@ -7,14 +7,21 @@ import (
 	"awesomeProject/structures"
 	"awesomeProject/vars"
 	"encoding/json"
+	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
 	"os"
+	"reflect"
 	"time"
 )
 
+var ee1 = errors.New("error check")
+var testS = "privet"
+var ffff = 10 // переменная, которую используем с указателем
 func main() {
-	var brother = 10          // создали переменную
+
+	var brother = 10 // создали переменную
+	// var brother2, brother3 int = 23, 45
 	brother, sister := 14, 34 // а здесь с помощью синтаксического сахара краткой формы объявления переменной мы старой переменной смогли переприсвоить значение а не создать ее, потому что слева еще была указана новая переменная
 	//brother:= 14 // а тут будет ошибка что нет новой переменной слева
 	fmt.Printf("The type of the following var is: %T,the value is: %v\n", vars.BasStr, vars.BasStr) // используем спецификаторы для вывода типа и значения переменной
@@ -39,6 +46,31 @@ func main() {
 		Age:    18,
 		Gender: "male",
 	} // помещаем в переменную структуру типа User с наполненными данными, проходящими валидацию
+	tester2 := structures.User{Age: 12, Gender: "male"}
+	//tester3 := &tester2
+	//tester4 := []int{1, 3, 5}
+	//var tester5 structures.User
+	var tester6 [5]int = [5]int{1, 2, 3, 4, 5}
+	tester6Sl := tester6[1:]
+	fmt.Println(cap(tester6Sl))
+
+	tester7Sl := []int{1, 5, 6}
+	tester8sl := tester7Sl[1:]
+	tester7Sl = tester7Sl[1:]
+	fmt.Println(tester7Sl, tester8sl)
+	tester7Sl = tester7Sl[0:]
+	fmt.Println(cap(tester7Sl))
+	tester7Sl = append(tester7Sl, 1, 2, 5) // очень важно - если мы аппендим - мы создаем новый расширенный массив, в который перекладываем значения из старого
+	fmt.Println(cap(tester7Sl))
+	fmt.Println(tester7Sl, tester8sl)
+	tester7Sl[0] = 2332342
+	fmt.Println(tester7Sl, tester8sl[0]) // поэтому тут не видны изменения в tester8sl, так как он ссылается все еще на старый массив
+	//fmt.Println(tester2.Age)
+	tester2.Name = "fsdf"
+
+	var tester10 []int
+	fmt.Println(tester10 == nil)
+
 	adm := structures.Admin{Inh: structures.User{
 		Name:   "1",
 		Age:    0,
@@ -137,4 +169,44 @@ func main() {
 	case false:
 		fmt.Println("I'm writingППППП")
 	}
+
+	//fmt.Println(TestTest(10))
+	//fmt.Println(TestTest(10), testS)
+
+	// тестируем функции с указателями и без
+
+	fmt.Println(updater(ffff)) // при вызове просто достаем значение переменной, и присваиваем его копию уже локальной переменной функции
+	fmt.Println(ffff)          // видим что изменения не коснулись переменной ffff
+
+	fmt.Println(updaterWithAddr(&ffff)) //
+	fmt.Println(ffff)
+	fmt.Println(updater(ffff))
+	fmt.Println(reflect.TypeOf(ffff))
+	fmt.Println(typeChecker(structures.User{}))
+	var oldSlice []int = []int{1, 3, 4}
+	fmt.Println(oldSlice, &oldSlice[1])
+	newSl := updaterForEveryth(oldSlice)
+	fmt.Println(newSl, &newSl[1], &newSl[1] == &oldSlice[1]) // видимо что адреса совпадают потому что при копировании слайса из одного в другой копируется адрес на массив
 }
+func updater(ffff int) int { //имя параметра совпадает с именем переменной выше, но это разные переменные
+	ffff = 150 //
+	return ffff
+}
+
+func typeChecker(ffff interface{}) interface{} { //тип интерфейс принимает любой тип данных, функция возвращает тип передаваемого значения
+	ffff = reflect.TypeOf(ffff)
+	return ffff
+}
+func updaterForEveryth(fff []int) []int {
+	newW := fff
+	return newW
+}
+func updaterWithAddr(ffff *int) int { //тут же мы указываем при объявлении переменной тип - ссылка
+	*ffff = 1500
+	return *ffff
+}
+
+//func TestTest(fff int) int {
+//	testS = "2"
+//	return fff
+//}
