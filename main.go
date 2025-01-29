@@ -7,15 +7,15 @@ import (
 	"awesomeProject/structures"
 	"awesomeProject/vars"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"github.com/go-playground/validator/v10"
+
 	"os"
 	"reflect"
 	"time"
 )
 
-var ee1 = errors.New("error check")
+// var ee1 = errors.New("error check")
 var testS = "privet"
 var ffff = 10 // переменная, которую используем с указателем
 func main() {
@@ -182,19 +182,159 @@ func main() {
 	fmt.Println(ffff)
 	fmt.Println(updater(ffff))
 	fmt.Println(reflect.TypeOf(ffff))
-	fmt.Println(typeChecker(structures.User{}))
+	fmt.Println(typeChecker(ffff))
 	var oldSlice []int = []int{1, 3, 4}
 	fmt.Println(oldSlice, &oldSlice[1])
 	newSl := updaterForEveryth(oldSlice)
 	fmt.Println(newSl, &newSl[1], &newSl[1] == &oldSlice[1]) // видимо что адреса совпадают потому что при копировании слайса из одного в другой копируется адрес на массив
+	fmt.Println(products(1, 4, 6))
+
+	newSll := []int{1, 4, 5}
+	for iii := 0; iii < len(newSll); iii++ {
+
+		println(iii, newSll[iii])
+	}
+	varT := []int{10, 4}
+	fmt.Println(varT)
+	fmt.Println(products(varT...)) // этот параметр раскладывает слайс/массив на отдельные элементы при добавлении в тот самый слайс параметров factors ...int, то есть он каждый элемент слайса извлекает из переменной varT, и кладет в другой слайс, работает только со срезами!
+	var newM1 map[int]string = map[int]string{1: "test", 2: "dfgf", 3: "dfgf", 4: "dfgf"}
+	for k, v := range newM1 {
+		println(k, v)
+	}
+
+	vvvv := stri{10, "sdf"}
+	fmt.Println(vvvv)
+
+	vvvv.wow()
+
+	newM1[234] = "TEST"
+	fmt.Println(newM1[234])
+	_, checkerr := newM1[2345]
+	fmt.Println(checkerr)
+	//var newM = map[int]string{}
+	ggg := 10000000
+	fmt.Println(ggg, &ggg)
+	println(newM1 == nil, newM1)
+	fff := clos(&ggg)
+	fmt.Println(fff())
+	fmt.Println(ggg)
+
+	stels := bicycle{
+		Chain: 10,
+		transport: transport{
+			Speed: 155,
+		},
+	}
+	fmt.Println(stels.Speed)
+	newSlSS := []int{1, 4, 6}
+	fmt.Println(&newSlSS[0])
+
+	vvvvvv := Vertexx{XX: 1.0, YY: 3.0}
+	fmt.Println(vvvvvv)
+
+	firstSlice := []int{1, 2, 3}
+	//secondSlice := []int {4,5,6}
+	fmt.Println(multiplier(firstSlice...)) // тут используется оператор развертывания, он используется только для среза
+	// fffff(3, 5)
+	var fffff func(int, int) int
+	fffff = sum
+	fmt.Println(fffff(3, 5))
+	fffff = product // такая функция не будет компилироваться раньше с глобальными функциями, поэтому использовать ее до этого участка кода и вызывать нельзя
+	fmt.Println(fffff(3, 5))
+	fmt.Println(reflect.TypeOf(fffff)) // т
+	iter := 0
+	for iter < 10 {
+
+		iter++
+	}
 }
+
+type creature struct {
+	name string
+	age  int
+}
+type human struct {
+	creature
+	gender bool
+}
+
+type animal struct {
+	creature
+	legsCount int
+}
+
+type speakable interface {
+	Speak() string
+}
+
+func (a *animal) Speak() string {
+	if a.legsCount == 4 {
+		return "Bark"
+	}
+	return "Shhh"
+}
+
+func (h *human) Speak() string {
+	return "Hi"
+}
+
+type Vertexx struct {
+	XX, YY float64
+}
+
+type transport struct {
+	Wheels bool
+	Speed  int
+}
+
+type bicycle struct {
+	Chain int
+	transport
+}
+type stri struct {
+	Age  int
+	Name string
+}
+
+func (x stri) wow() {
+	fmt.Println(x.Age)
+}
+
+func clos(x *int) func() int {
+	return func() int {
+		*x++
+		return *x
+	}
+
+}
+
+func sum(x, y int) int {
+
+	return x + y
+}
+func product(x, y int) int {
+	return x * y
+}
+
 func updater(ffff int) int { //имя параметра совпадает с именем переменной выше, но это разные переменные
 	ffff = 150 //
 	return ffff
 }
 
 func typeChecker(ffff interface{}) interface{} { //тип интерфейс принимает любой тип данных, функция возвращает тип передаваемого значения
-	ffff = reflect.TypeOf(ffff)
+	ffff = reflect.TypeOf(ffff).Name()
+
+	switch ffff.(type) {
+	case string:
+		fmt.Println("string")
+
+	case int:
+		fmt.Println("int")
+
+	default:
+		fmt.Println("unknown")
+	}
+
 	return ffff
 }
 func updaterForEveryth(fff []int) []int {
@@ -204,6 +344,22 @@ func updaterForEveryth(fff []int) []int {
 func updaterWithAddr(ffff *int) int { //тут же мы указываем при объявлении переменной тип - ссылка
 	*ffff = 1500
 	return *ffff
+}
+
+func products(factors ...int) int { // параметр factors ...int это параметр среза переменного числа аргументов, в данном случае это срез из произвольного кодичества элементов типа int. Если я укажу другой тип, то будут другие элементы в срез собираться
+	p := 1
+	for _, n := range factors {
+		p *= n
+	}
+	return p
+}
+
+func multiplier(n ...int) int {
+	multRes := 1
+	for _, element := range n {
+		multRes *= element
+	}
+	return multRes
 }
 
 //func TestTest(fff int) int {
